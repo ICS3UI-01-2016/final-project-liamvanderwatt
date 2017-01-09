@@ -1,4 +1,5 @@
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JComponent;
@@ -13,15 +14,15 @@ import javax.swing.JFrame;
 public class tankgame extends JComponent{
 
     // Height and Width of our game
-    static final int WIDTH = 800;
+    static final int WIDTH = 1000;
     static final int HEIGHT = 600;
     
     // sets the framerate and delay for our game
     // you just need to select an approproate framerate
     long desiredFPS = 60;
     long desiredTime = (1000)/desiredFPS;
-    
-
+    // game vairbles
+    Color dirt = new Color(171, 99, 5);
     
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
@@ -33,6 +34,10 @@ public class tankgame extends JComponent{
         g.clearRect(0, 0, WIDTH, HEIGHT);
         
         // GAME DRAWING GOES HERE 
+          //changing the color the sky 
+        g.setColor(dirt);
+        //making the backround
+        g.fillRect( 0, 0,WIDTH,HEIGHT);
         
         
         // GAME DRAWING ENDS HERE
