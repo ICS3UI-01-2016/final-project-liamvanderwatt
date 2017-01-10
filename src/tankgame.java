@@ -2,6 +2,7 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
@@ -23,7 +24,9 @@ public class tankgame extends JComponent{
     long desiredTime = (1000)/desiredFPS;
     // game vairbles
     Color dirt = new Color(171, 99, 5);
-    Color tank = new Color(63,204,89);
+    Color tankcolour = new Color(63,204,89);
+    // tank varibles
+   Rectangle tank =new Rectangle(100, 25, 40, 30);
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
     // NOTE: This is already double buffered!(helps with framerate/speed)
@@ -42,11 +45,11 @@ public class tankgame extends JComponent{
          g.setColor(Color.BLACK);
          g.fillRect(0,200,1000,200);
         //making the tank
-         g.setColor(tank);
-         g.fillRect(100, 25, 40, 30);
+         g.setColor(tankcolour);
+         g.fillRect(tank.x, tank.y,tank.width, tank.height);
          //making the barrel of the tank
-        g.setColor(tank);
-         g.fillRect(140, 35,20, 10);
+        g.setColor(tankcolour);
+         g.fillRect(tank.x+40, tank.y+10,tank.width-20, tank.height-20);
         // GAME DRAWING ENDS HERE
     }
     
