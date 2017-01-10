@@ -23,7 +23,7 @@ public class tankgame extends JComponent{
     long desiredTime = (1000)/desiredFPS;
     // game vairbles
     Color dirt = new Color(171, 99, 5);
-    
+    Color tank = new Color(63,204,89);
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
     // NOTE: This is already double buffered!(helps with framerate/speed)
@@ -38,8 +38,15 @@ public class tankgame extends JComponent{
         g.setColor(dirt);
         //making the backround
         g.fillRect( 0, 0,WIDTH,HEIGHT);
-        
-        
+        // making a road
+         g.setColor(Color.BLACK);
+         g.fillRect(0,200,1000,200);
+        //making the tank
+         g.setColor(tank);
+         g.fillRect(100, 25, 40, 30);
+         //making the barrel of the tank
+        g.setColor(tank);
+         g.fillRect(140, 35,20, 10);
         // GAME DRAWING ENDS HERE
     }
     
