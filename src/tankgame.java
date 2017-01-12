@@ -3,6 +3,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
@@ -12,10 +14,10 @@ import javax.swing.JFrame;
  */
 
 
-public class tankgame extends JComponent{
+public class tankgame extends JComponent implements KeyListener{
 
     // Height and Width of our game
-    static final int WIDTH = 1000;
+    static final int WIDTH = 1200;
     static final int HEIGHT = 600;
     
     // sets the framerate and delay for our game
@@ -26,7 +28,7 @@ public class tankgame extends JComponent{
     Color dirt = new Color(171, 99, 5);
     Color tankcolour = new Color(63,204,89);
     // tank varibles
-   Rectangle tank =new Rectangle(100, 25, 40, 30);
+   Rectangle tank =new Rectangle(100,300, 40, 30);
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
     // NOTE: This is already double buffered!(helps with framerate/speed)
@@ -43,7 +45,7 @@ public class tankgame extends JComponent{
         g.fillRect( 0, 0,WIDTH,HEIGHT);
         // making a road
          g.setColor(Color.BLACK);
-         g.fillRect(0,200,1000,200);
+         g.fillRect(0,200,WIDTH,200);
         //making the tank
          g.setColor(tankcolour);
          g.fillRect(tank.x, tank.y,tank.width, tank.height);
@@ -120,8 +122,18 @@ public class tankgame extends JComponent{
         frame.pack();
         // shows the window to the user
         frame.setVisible(true);
-        
+        frame.addKeyListener(game);
         // starts my game loop
         game.run();
     }
+     @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+}
+    @Override
+    public void keyReleased(KeyEvent e) {
+}
 }
