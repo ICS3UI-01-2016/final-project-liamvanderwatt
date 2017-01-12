@@ -128,12 +128,21 @@ public class tankgame extends JComponent implements KeyListener{
     }
      @Override
     public void keyTyped(KeyEvent e) {
+       
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
+         int key = e.getKeyCode();
+        if (key == KeyEvent.VK_UP) {
+           tank.y = tank.y-30;
+        }
+           if (key == KeyEvent.VK_DOWN) {
+           tank.y = tank.y+30;
+        }
 }
     @Override
     public void keyReleased(KeyEvent e) {
+        
 }
 }
