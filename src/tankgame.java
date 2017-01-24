@@ -1,6 +1,7 @@
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
@@ -24,13 +25,17 @@ public class tankgame extends JComponent implements KeyListener {
     long desiredTime = (1000) / desiredFPS;
     // game vairbles
     // adding speed of the boulders
-    int speed = 5;
+    int speed = 3;
     Color dirt = new Color(171, 99, 5);
     Color tankcolour = new Color(63, 204, 89);
     // tank varibles
-    Rectangle tank = new Rectangle(100, 300, 40, 30);
+    Rectangle tank = new Rectangle(125, 150, 40, 30);
     //bolder varibles
     Rectangle[] boulder = new Rectangle[6];
+    //adding score
+    boolean[] boulderPassed = new boolean[6];
+    int score = 0;
+    Font scoreFont = new Font("comicSans",Font.BOLD,42);
     // making the boulder vairbles
     //height of the boulder
     int boulderHeight = 100;
@@ -42,10 +47,12 @@ public class tankgame extends JComponent implements KeyListener {
     int boulderSpacing = 250;
     //adding death vairable
     boolean dead = false;
-   
+    //adding start vairable
+    boolean start = false;
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
     // NOTE: This is already double buffered!(helps with framerate/speed)
+
     @Override
     public void paintComponent(Graphics g) {
         // always clear the screen first!
@@ -70,6 +77,10 @@ public class tankgame extends JComponent implements KeyListener {
         for (int i = 0; i < boulder.length; i++) {
             g.fillRect(boulder[i].x, boulder[i].y, boulder[i].width, boulder[i].height);
         }
+        // adding score keeper
+        g.setColor(Color.LIGHT_GRAY);
+        g.setFont(scoreFont);
+        g.drawString(""+score, WIDTH/2, 50);
     }
     // GAME DRAWING ENDS HERE
 
@@ -83,24 +94,29 @@ public class tankgame extends JComponent implements KeyListener {
         int boulderX = boulder[boulderPosition].x;
         boulderX = boulderX + (boulderWidth + boulderSpacing) * boulder.length;
         boulder[boulderPosition].setBounds(boulderX, boulderY, boulderWidth, boulderHeight);
+         boulderPassed[boulderPosition]=false;
 
     }
-    public void reset(){
-         //set up boulders
+
+    public void reset() {
+        //set up boulders
         int boulderX = 700;
         Random randGen = new Random();
         for (int i = 0; i < boulder.length; i++) {
             //generating a random y postion
             int boulderY = randGen.nextInt(HEIGHT - 2 * minDistance) + minDistance;
             boulder[i] = new Rectangle(boulderX, boulderY, boulderWidth, boulderHeight);
-           
             //move the boulderX value over
-            boulderX = boulderX + boulderWidth +boulderSpacing;
-            
+            boulderX = boulderX + boulderWidth + boulderSpacing;
+            boulderPassed[i]=false;
+
         }
         //reset the tank
         tank.y=100;
         dead=false;
+        start=false;
+        score=0;
+        speed =3;
     }
     // The main game loop
     // In here is where all the logic for my game will go
@@ -111,17 +127,18 @@ public class tankgame extends JComponent implements KeyListener {
         long startTime;
         long deltaTime;
 
-        //set up boulder
-         int boulderX = 700;
+        //set up boulders
+        int boulderX = 700;
         Random randGen = new Random();
         for (int i = 0; i < boulder.length; i++) {
             //generating a random y postion
             int boulderY = randGen.nextInt(HEIGHT - 2 * minDistance) + minDistance;
             boulder[i] = new Rectangle(boulderX, boulderY - boulderHeight, boulderWidth, boulderHeight);
-            //move the Pipe X value over
+            //move the boulder X value over
             boulderX = boulderX + boulderWidth + boulderSpacing;
-
+            boulderPassed[i] = false;
         }
+        
 
 
         // the main game loop section
@@ -132,26 +149,48 @@ public class tankgame extends JComponent implements KeyListener {
             startTime = System.currentTimeMillis();
 
             // all your game rules and move is done in here
-            // GAME LOGIC STARTS HERE 
-            // making barrers for map 
-            if (tank.y < 0) {
-                tank.y = 0;
-            } else if (tank.y + tank.height > HEIGHT) {
-                tank.y = HEIGHT - tank.height;
+            // GAME LOGIC STARTS HERE
+            if (score ==3 && score>=3 && score<=3){
+                speed = speed+1;
+                System.out.println(""+speed);
+                
             }
-            //if the tank hits the boulders
-                for(int i =0; i<boulder.length;i++){
-                    if(tank.intersects(boulder[i])){
+            if (start) {
+                // making barrers for map 
+                if (tank.y < 0) {
+                    tank.y = 0;
+                } else if (tank.y + tank.height > HEIGHT) {
+                    tank.y = HEIGHT - tank.height;
+                }
+                for (int i = 0; i < boulder.length; i++) {
+                    if (tank.intersects(boulder[i])) {
                         dead = true;
+                        if (dead = true) {
+                            reset();
+                        }
+
+                    }
                 }
+               // see if we dodged a Boulder
+               for (int i = 0; i < boulder.length; i++) {
+                    if (!boulderPassed[i] && tank.x > boulder[i].x + boulderWidth) {
+                        score++;
+                        boulderPassed[i] = true;
+                    }
                 }
-            for (int i = 0; i < boulder.length; i++) {
-                boulder[i].x = boulder[i].x - speed;
-                //check if a boulder went off the screen
-                if (boulder[i].x + boulderWidth < 0) {
-                    //move the boulder
-                    setBoulder(i);
+
+                for (int i = 0; i < boulder.length; i++) {
+                    boulder[i].x = boulder[i].x - speed;
+                    //check if a boulder went off the screen
+                    if (boulder[i].x + boulderWidth < 0) {
+                        //move the boulder
+                        setBoulder(i);
+                    }
                 }
+              if (score == 1000){
+                  System.out.println("you win");
+                  break;
+              }
             }
 
             // GAME LOGIC ENDS HERE 
@@ -177,13 +216,9 @@ public class tankgame extends JComponent implements KeyListener {
         }
     }
 
-
-
-        /**
-         * @param args the command line arguments
-         */
-    
-
+    /**
+     * @param args the command line arguments
+     */
     public static void main(String[] args) {
         // creates a windows to show my game
         JFrame frame = new JFrame("My Game");
@@ -215,9 +250,11 @@ public class tankgame extends JComponent implements KeyListener {
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_UP) {
             tank.y = tank.y - 35;
+            start = true;
         }
         if (key == KeyEvent.VK_DOWN) {
             tank.y = tank.y + 35;
+            start = true;
         }
 
     }
