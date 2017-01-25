@@ -49,6 +49,7 @@ public class tankgame extends JComponent implements KeyListener {
     boolean dead = false;
     //adding start vairable
     boolean start = false;
+    
     // drawing of the game happens in here
     // we use the Graphics object, g, to perform the drawing
     // NOTE: This is already double buffered!(helps with framerate/speed)
@@ -81,6 +82,12 @@ public class tankgame extends JComponent implements KeyListener {
         g.setColor(Color.LIGHT_GRAY);
         g.setFont(scoreFont);
         g.drawString(""+score, WIDTH/2, 50);
+        
+        if (score== 1000){
+            g.setColor(Color.WHITE);
+            g.fillRect(0, 0,WIDTH , HEIGHT);
+        
+    }
     }
     // GAME DRAWING ENDS HERE
 
@@ -115,8 +122,8 @@ public class tankgame extends JComponent implements KeyListener {
         tank.y=100;
         dead=false;
         start=false;
-        score=0;
-        speed =3;
+      
+        
     }
     // The main game loop
     // In here is where all the logic for my game will go
@@ -150,12 +157,10 @@ public class tankgame extends JComponent implements KeyListener {
 
             // all your game rules and move is done in here
             // GAME LOGIC STARTS HERE
-            if (score ==3 && score>=3 && score<=3){
-                speed = speed+1;
-                System.out.println(""+speed);
-                
-            }
-            if (start) {
+                if (start) {    
+                    
+                    
+            
                 // making barrers for map 
                 if (tank.y < 0) {
                     tank.y = 0;
@@ -187,10 +192,9 @@ public class tankgame extends JComponent implements KeyListener {
                         setBoulder(i);
                     }
                 }
-              if (score == 1000){
-                  System.out.println("you win");
-                  break;
-              }
+              if (score >= 1000){
+                 break;
+            }
             }
 
             // GAME LOGIC ENDS HERE 
