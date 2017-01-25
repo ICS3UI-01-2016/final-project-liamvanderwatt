@@ -192,7 +192,7 @@ public class tankgame extends JComponent implements KeyListener {
                         setBoulder(i);
                     }
                 }
-              if (score >= 1000){
+              if (score >= 1001){
                  break;
             }
             }
